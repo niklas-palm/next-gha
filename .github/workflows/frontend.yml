@@ -35,7 +35,7 @@ jobs:
 
       - name: Overwrite .env with prod config # REPLACE URL WITH YOUR API URL
         run: |
-          echo "https://1gq8s2j70k.execute-api.eu-west-1.amazonaws.com/Prod/" > .env
+          echo "NEXT_PUBLIC_API_URL=https://1gq8s2j70k.execute-api.eu-west-1.amazonaws.com/Prod/" > .env
 
       - name: install node dependencies
         run: |
