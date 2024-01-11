@@ -1,0 +1,42 @@
+name: Backend workflow
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/**
+      - .github/workflows/backend.yml
+
+env:
+  AWS_REGION: "eu-west-1" # Select this to suit where you'd like to deploy your workload
+  REPO: ${{github.event.repository.name}}
+  ENVIRONMENT: prod
+  OIDC_ROLE: arn:aws:iam::192114778981:role/GithubActionDeploymentRole # CHANGE THIS and configure according to these instructions: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+jobs:
+  BuildDeployBackend:
+    defaults:
+      run:
+        working-directory: ./backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the repo
+        uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{env.OIDC_ROLE}}
+          aws-region: ${{env.AWS_REGION}}
+
+      - name: sam build
+        run: |
+          sam build --use-container
+          sam deploy --stack-name ${{env.REPO}}-backend \
+            --parameter-overrides ENVIRONMENT=${{env.ENVIRONMENT}} \
+            --resolve-s3 \
+            --region ${{env.AWS_REGION}} \
+            --no-fail-on-empty-changeset \
+            --tags project=${{env.REPO}} environment=${{env.ENVIRONMENT}}
