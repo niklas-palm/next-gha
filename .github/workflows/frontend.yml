@@ -33,9 +33,9 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Overwrite .env with prod config
+      - name: Overwrite .env with prod config # REPLACE URL WITH YOUR API URL
         run: |
-          echo "https://this.is.prod.yo" > .env
+          echo "https://1gq8s2j70k.execute-api.eu-west-1.amazonaws.com/Prod/" > .env
 
       - name: install node dependencies
         run: |
@@ -45,6 +45,6 @@ jobs:
         run: |
           npm run build
 
-      - name: upload new frontend artifacts
+      - name: upload new frontend artifacts # REPLACE BUCKET NAME WITH YOUR BUCKET
         run: |
-          aws s3 cp ./out s3://BUCKETNAME --recursive
+          aws s3 cp ./out s3://next-gha-backend-hostingbucket-xfswkushvsbh --recursive
