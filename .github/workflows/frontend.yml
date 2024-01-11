@@ -35,7 +35,7 @@ jobs:
 
       - name: Overwrite .env with prod config
         run: |
-          echo "https://this.is.prod.yo" > ../.env
+          echo "https://this.is.prod.yo" > .env
 
       - name: install node dependencies
         run: |
