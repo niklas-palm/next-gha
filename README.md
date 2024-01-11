@@ -1,4 +1,4 @@
-# Simple Web app with APIGW+Lambda backend with Github Action
+# Simple Web app with APIGW+Lambda backend with Github Actions
 
 This sets up a simple static Next frontend with Tailwindcss that's hosted on S3 with a Lambda and APIGW backend. Github Actions is used for CI/CD
 
