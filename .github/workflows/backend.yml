@@ -39,4 +39,5 @@ jobs:
             --resolve-s3 \
             --region ${{env.AWS_REGION}} \
             --no-fail-on-empty-changeset \
+            --no-confirm-changeset \
             --tags project=${{env.REPO}} environment=${{env.ENVIRONMENT}}

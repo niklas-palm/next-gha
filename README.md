@@ -1,6 +1,6 @@
 # Simple Web app with APIGW+Lambda backend with Github Action
 
-This sets up a simple static Next frontend that's hosted on S3 with a Lambda and APIGW backend. Github Actions is used for CI/CD
+This sets up a simple static Next frontend with Tailwindcss that's hosted on S3 with a Lambda and APIGW backend. Github Actions is used for CI/CD
 
 ## Initial setup
 
@@ -64,5 +64,17 @@ These are the one-time steps to set up continuous deployment from the main branc
 1. Set up trust between Github Actions and the AWS account that will host the production workload. [Docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
 2. Copy the ARN of the role you just created and paste into the 2 Github Actions workflow files. This role will be assumed by Github Actions, granting Github Actions permissions to do what the role says in your AWS account, for instance deploy cloudformation to create resources.
 3. Check in the `.github` directory and the `backend` directory. This triggers deployment of the production backend and hosting using Github actions. Note the hosting `S3 bucket name`, `API URL`and `CDN domain name` from the cloudformation stack outputs.
-4. In the github actions frontend workflow file, insert the bucket name in the `aws s3 cp` command to have github actions deploy future frontend changes to the correct bucket that's hosting the production frontend.
-5.
+4. In the github actions frontend workflow file,
+   1. insert the bucket name in the `aws s3 cp` command to have github actions deploy future frontend changes to the correct bucket that's hosting the production frontend.
+   2. insert the API URL of the production backend into the command that does "echo" into an environment file.
+5. Check in the `frontend` directory.
+
+### Hot-reload Lambda function
+
+To hot-reload the Lambda (live-update "on save"), use
+
+```
+sam sync
+```
+
+This starts a "watcher" that watches for changes. If you update the Lambda function and save, it automatically syncs the changes to the live Lambda function. This is a great way to iterate on a Lambda function in a development environment.
